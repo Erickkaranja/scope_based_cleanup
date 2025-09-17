@@ -1,83 +1,8 @@
-/* Scoped_guard is implemented using a for loop.
-   Transformations that change the original behavior 
-   of the break statement are not applied.
-*/
-
-@gt_bad_break exists@
-expression list es;
-iterator I;
-position p;
-identifier virtual.lock;
-identifier virtual.unlock;
-@@
-(
-I(...){
-  <...
-  lock@p(es);
-   ... when != unlock(es);
-       when any
-(
-    {
-       ...
-       unlock(es);
-       ... when any
-       break;
-    }
-|
-
-break;
-)
-   ...>
-}
-
- 
-|
-
-for(...; ...; ...){
-   <...
-   lock@p(es);
-   ... when != unlock(es);
-       when any
-(
-     {
-       ...
-       unlock(es);
-       ... when any
-       break;
-     }
-|
-
-break;
-)
-   ...>
-}
-
-|
-
-while(...) {
- <...
- lock@p(es);
- ... when != unlock(es);
-     when any
-(
-    {
-     ...
-     unlock(es);
-     ... when any
-     break;
-    }
-|
-break;
-)
- ...>
-}
-)
-
 //Ensure a strict lock and unlock order
 
 @gt_lock_order@
 expression list es;
-position lp != gt_bad_break.p;
+position lp;
 position up;
 identifier virtual.lock;
 identifier virtual.unlock;

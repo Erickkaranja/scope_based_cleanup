@@ -71,6 +71,12 @@ break;
 }
 )
 
+@script:python@
+p << sg_bad_break.p;
+@@
+print(f"Transformation of node at line:{p[0].line} file:{p[0].file} \
+may lead to an unintended use of break statement")
+
 @sg_unlock_at_else@
 expression list es;
 identifier virtual.lock;
@@ -87,18 +93,23 @@ lock@p(es);
   ...
   unlock(es);
   }
+@script:python@
+p << sg_unlock_at_else.p;
+@@
+print(f"{p[0].file}-- line:{p[0].line} cannot transform this node as unlock happens at an else condition")
 
 @is_goto@
 position pl;
 identifier lbl;
+statement S;
 @@
-goto lbl@pl;
+goto lbl;@S@pl
 
 @sg_bad_early_unlock exists@
 expression list es;
 position p;
 position p1 != is_goto.pl;
-expression E;
+statement S;
 identifier virtual.lock;
 identifier virtual.unlock;
 @@
@@ -107,18 +118,19 @@ lock@p(es);
    if(...){
     ...
     unlock(es);
-    E@p1;
+    S@p1
     ... when any
     return ...;
    }
+
 @script:python@
 p << sg_bad_early_unlock.p1;
 @@
-print(f"---{p[0].line}")
+print(f"Bad early unlock due to statement on line: {p[0].line} -- file:{p[0].file}")
 
 @sg_bad_early_unlock_2 exists@
 expression list es; 
-position p;
+position p, p1;
 statement S;
 identifier virtual.lock;
 identifier virtual.unlock;
@@ -128,10 +140,15 @@ lock@p(es);
    if(...){
     ... 
     unlock(es);
-    S
+    S@p1
     ... when any 
     continue;
    }
+
+@script:python@
+p << sg_bad_early_unlock_2.p1;
+@@
+print(f"Bad early unlock due to statement on line: {p[0].line} -- file: {p[0].file}")
 
 @sg_initial_lock@
 expression list es;
@@ -190,32 +207,32 @@ if p:
 
 @sg_early_unlock@
 expression list sg_initial_lock.es;
-position p;
+position p, lock_unlock_order.up;
 identifier virtual.unlock;
 
 @@
-if(...) { ...unlock@p(es); ... return ...; }
+if(...) { ...unlock@p@up(es); ... return ...; }
 
 @sg_early_unlock_2@
 expression list sg_initial_lock.es;
-position p;
+position p, lock_unlock_order.up;
 identifier virtual.unlock;
 
 @@
-if(...) { ...unlock@p(es); continue; }
+if(...) { ...unlock@p@up(es); continue; }
 
 @sg_early_unlock_3@
 expression list sg_initial_lock.es;
-position p;
+position p, lock_unlock_order.up;
 identifier label;
 identifier virtual.unlock;
 
 @@
-if(...) { ...unlock@p(es);  goto label; }
+if(...) { ...unlock@p@up(es);  goto label; }
 
 @sg_early_unlock_4@
 expression list sg_initial_lock.es;
-position p;
+position p, lock_unlock_order.up;
 identifier virtual.unlock;
 @@
 switch(...) {
@@ -223,16 +240,16 @@ switch(...) {
   ...
   default:
   ...
-  unlock@p(es);
+  unlock@p@up(es);
   return ...;
 }
 
 @sg_early_unlock_5@
 expression list sg_initial_lock.es;
-position p;
+position p, lock_unlock_order.up;
 identifier virtual.unlock;
 @@
-if(...) {... unlock@p(es); break;}
+if(...) {... unlock@p@up(es); break;}
 /*
   Identify the last unlock position which
   should be different from the early_unlocks
@@ -262,8 +279,6 @@ unlock@up@p(es);
 expression list sg_initial_lock.es;
 position sg_last_unlock.p, lock_unlock_order.lp;
 identifier label;
-constant C;
-local idexpression E;
 identifier virtual.lock;
 identifier virtual.unlock;
 identifier virtual.lock_type;
@@ -305,16 +320,7 @@ identifier virtual.lock_type;
 
 |
 
-if(...)
-    {
-     ...
--    unlock(es);
-     E = C;
-     goto label;
-    }   
-
-|
-  if(...)
+ if(...)
 -   {
 -    unlock(es);
      goto label;
