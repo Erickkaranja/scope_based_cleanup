@@ -11,9 +11,7 @@ if(...)
 -  return I;
 + return C;
 -}
-
 |
-
 if(...)
 {
  S
@@ -23,21 +21,16 @@ if(...)
 }
 )
 
-
 @last@
-
 expression E, E1; 
 statement S;
 identifier flags;
-
 @@
 (
  scoped_guard(E, E1
 -, flags
  ) S
-
 |
-
  guard(E)(E1
 -, flags
  );

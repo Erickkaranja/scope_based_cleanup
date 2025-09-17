@@ -14,9 +14,7 @@ unlock@up(es);
 @script:python@
 up << gt_lock_order.up;
 lp << gt_lock_order.lp;
-
 @@
-
 for i in range(len(up)):
     if int(lp[0].line) > int(up[i].line):
         cocci.include_match(False)
@@ -36,7 +34,6 @@ lock(es);
 
 @script:python@
 p << gt_lock_order_2.p;
-
 @@
 if p:
    cocci.include_match(False)
@@ -45,7 +42,6 @@ if p:
 identifier lbl;
 expression E1;
 @@
-
 <...
 if(E1)
 +{
@@ -128,7 +124,6 @@ if(...) {
 -unlock(es);
 -return;
 }
-
 |
 if(...) {
 ...
@@ -139,9 +134,7 @@ if(...) {
 -unlock(es);
 -return E;
 }
-
 |
-
 if(...){
 ...
 -goto lbl;
@@ -153,9 +146,7 @@ lbl_2:
 ...
 return ...; 
 }
-
 |
-
 if(...){
 ...
 goto lbl;
@@ -213,9 +204,7 @@ if(E1)
 -{
 goto lbl;
 -}
-
 |
-
 if(E1)
 -{
 return ...;
