@@ -92,6 +92,7 @@ lock@p(es);
   else {
   ...
   unlock(es);
+  ...
   }
 @script:python@
 p << sg_unlock_at_else.p;
@@ -364,8 +365,7 @@ p << guard.p;
 if (int(p[0].current_element_line_end) - int(p[0].current_element_line)) > 20:
    cocci.include_match(False)
 
-//To avoid CLANG complain, avoid
-//transforming scoped_guard to guard in 
+//To avoid CLANG complain, avoid transforming scoped_guard to guard in 
 //nodes with goto labels.
 
 @bad_guard exists@

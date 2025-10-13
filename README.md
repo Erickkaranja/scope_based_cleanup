@@ -48,8 +48,8 @@ make [target]
 make spinlock
 ```
 ### References
-For further understanding on the inner working of the script, please reffer
-to the blog posts below:-
+For further understanding on the inner working of the script, please refer
+to the blog posts below:
  1. https://erickkaranja1.wordpress.com/2025/06/08/smarter-resource-management-with-scoped_guard/
  2. https://erickkaranja1.wordpress.com/2025/07/02/from-mutex_lock-mutex_unlock-to-scoped_guard-part-2/
  3. https://erickkaranja1.wordpress.com/2025/08/07/from-lock-unlock-to-scoped_guard-part-3/
