@@ -195,7 +195,7 @@ identifier virtual.lock_type;
 
 @clean_up@
 expression unbraced_if.E1;
-identifier unbraced_if.lbl;
+identifier lbl;
 @@
 (
 if(E1)
