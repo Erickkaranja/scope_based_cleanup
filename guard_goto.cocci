@@ -42,12 +42,10 @@ if p:
 identifier lbl;
 expression E1;
 @@
-<...
 if(E1)
 +{
 goto lbl;
 +}
-...>
 
 @goto_unlock exists@
 expression list es;
