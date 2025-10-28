@@ -1,3 +1,5 @@
+#include "guard_goto.cocci"
+#include "scoped_guard.cocci"
 //clean-up after transformation
 @@
 identifier I;
@@ -22,16 +24,17 @@ if(...)
 )
 
 @last@
-expression E, E1; 
+identifier s_g.lock_type;
+expression E1; 
 statement S;
 identifier flags;
 @@
 (
- scoped_guard(E, E1
+ scoped_guard(lock_type, E1
 -, flags
  ) S
 |
- guard(E)(E1
+ guard(lock_type)(E1
 -, flags
  );
 )
@@ -43,4 +46,3 @@ type T;
 -T flags;
 ... when != flags
     when strict
-

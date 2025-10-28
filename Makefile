@@ -1,7 +1,7 @@
 # Makefile for running Coccinelle script against ~/git/kernels/linux
 
 # Variables
-COCCI_SCRIPT = ./scoped_guard.cocci
+COCCI_SCRIPT = ./cleanup.cocci
 #consider passing SOURCE_DIR as env
 SOURCE_DIR = ~/git/kernels/linux-next
 SPATCH = spatch

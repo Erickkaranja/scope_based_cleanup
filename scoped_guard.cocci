@@ -1,6 +1,3 @@
-#include "guard_goto.cocci"
-#include "cleanup.cocci"
-
 @sg_bad_break exists@
 expression list es;
 iterator I;
