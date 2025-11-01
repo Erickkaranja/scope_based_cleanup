@@ -24,7 +24,7 @@ if(...)
 )
 
 @last@
-identifier s_g.lock_type;
+identifier virtual.lock_type;
 expression E1; 
 statement S;
 identifier flags;
