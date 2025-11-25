@@ -389,20 +389,22 @@ t f(...) {
 
 @scoped_guard_to_guard@
 position p != bad_guard.p;
-expression E;
+//expression E;
 expression list es;
+identifier virtual.lock;
+identifier virtual.lock_type;
 @@
--scoped_guard@p(E, es) {
-+ guard(E)(es);
+-scoped_guard@p(lock_type, es) {
++ guard(lock_type)(es);
  ...
 -}
 return ...;
 
 //Remove extra braces around single statements 
 @remove_braces@
-expression E;
+identifier virtual.lock_type;
 @@
-scoped_guard(...)
+scoped_guard(lock_type, ...)
 -{
   E;
 -}
